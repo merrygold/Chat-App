@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import io from 'socket.io-client';
 
+import axios from "axios"
+
 const socket = io('http://localhost:3000');
 
 function ChatApp() {
+
+  const [check, setCheck] = useState("no messsage from server")
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [username, setUsername] = useState('');
@@ -25,9 +30,15 @@ function ChatApp() {
     setMessages([...messages, data]);
   });
 
+  async function checkServer() {
+    const response = await axios.get("http://localhost:3000/");
+    setCheck(response.data.Done)
+  }
+
   return (
     <div>
       <h1>Chat App</h1>
+      <button onClick={checkServer}>Value {check}</button>
       <form>
         <input
           type="text"
